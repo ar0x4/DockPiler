@@ -29,13 +29,13 @@ find . -name "*.sln" -exec wine "$MSBUILD_PATH" -t:Restore {} \;
 echo "Building .NET projects..."
 find . -name "*.sln" -exec wine "$MSBUILD_PATH" /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath=/output {} \;
 
-# Build C projects (32-bit Windows)
+# Build C projects (64-bit Windows)
 echo "Building C projects..."
-find . -name "*.c" -exec i686-w64-mingw32-gcc -static -o /output/{}.exe {} \;
+find . -name "*.c" -exec x86_64-w64-mingw32-gcc -static -o /output/{}.exe {} \;
 
-# Build C++ projects (32-bit Windows)
+# Build C++ projects (64-bit Windows)
 echo "Building C++ projects..."
-find . -name "*.cpp" -exec i686-w64-mingw32-g++ -static -o /output/{}.exe {} \;
+find . -name "*.cpp" -exec x86_64-w64-mingw32-g++ -static -o /output/{}.exe {} \;
 
 # Display build output
 echo "Build completed. Output files:"
