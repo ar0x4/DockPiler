@@ -46,6 +46,9 @@ RUN apt-get update && \
     cmake \
     libgl1 \
     libx11-dev \
+    gcc-mingw-w64-x86-64 \
+    g++-mingw-w64-x86-64 \
+    binutils-mingw-w64-x86-64 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Wine 8.0 with proper dependencies
