@@ -39,6 +39,8 @@ docker run -v $(pwd)/output:/output dockpiler <github_repo_url> [x64|x86]
 - `[x64|x86]`: Optional; defaults to x64.
 - The compiled binaries will be placed in `./output` on your host (create the directory if needed).
 
+![](./example.png)
+
 ### Examples
 
 1. Compile a C# project (default x64):
