@@ -14,6 +14,8 @@ This Docker image automates the process of cross-compiling Windows executables f
 
 The image uses Ubuntu 24.04 as the base, MinGW-w64 for C/C++ cross-compilation, and .NET SDK for C# builds. Architecture (x64 or x86) is configurable at runtime.
 
+**Note: The C/C++ compilation is not working well yet but im working on it to improve it. If you have any suggestions or improvements, feel free to contribute.**
+
 ## Features
 
 - **Automatic Project Detection**: Scans the repository recursively for build files and compiles accordingly.
