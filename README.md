@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="DockPiler" width="800">
+  <img src="assets/banner.svg" alt="DockPiler" width="700">
 </p>
 
 <p align="center">
@@ -27,19 +27,6 @@
 ## Overview
 
 **DockPiler** is a powerful Docker-based tool that automatically clones, compiles, and cross-compiles Windows executables from GitHub repositories — all from Linux or macOS. Perfect for security researchers, penetration testers, and developers who need to build Windows tools without a Windows machine.
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                 │
-│   GitHub Repository ──► DockPiler Container ──► Windows .exe   │
-│                                                                 │
-│   • C# (.NET Framework 4.0-4.8.1)                              │
-│   • C# (Modern .NET 6/7/8)                                     │
-│   • C++ (Visual Studio Projects)                               │
-│   • C++ (CMake / Makefile)                                     │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
 
 ## Features
 
@@ -96,9 +83,7 @@ docker build -t dockpiler-full \
 | Build Argument | Default | Description | Size Impact |
 |----------------|---------|-------------|-------------|
 | `INCLUDE_VCPKG` | `false` | vcpkg C++ package manager | +500MB |
-| `INCLUDE_MSVC` | `false` | MSVC compiler via Wine (x86_64 only) | +8GB |
-
-> **Note for Apple Silicon / ARM users:** The MSVC option requires x86_64 architecture and will be automatically skipped on ARM with a warning. MinGW cross-compilation works perfectly on ARM.
+| `INCLUDE_MSVC` | `false` | MSVC compiler via Wine | +8GB |
 
 ## Usage
 
@@ -260,10 +245,6 @@ Contributions are welcome! Areas for improvement:
 - [ ] NuGet package support for C++
 - [ ] Parallel project building
 - [ ] Build caching
-
-## License
-
-This project is provided as-is for educational and development purposes.
 
 ---
 
