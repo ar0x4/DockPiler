@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dockerBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0db7ed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="windowsBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00a4ef;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0078d4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" rx="40" fill="url(#bgGrad)"/>
+
+  <!-- Decorative grid lines -->
+  <g opacity="0.1" stroke="#ffffff" stroke-width="0.5">
+    <line x1="0" y1="100" x2="400" y2="100"/>
+    <line x1="0" y1="200" x2="400" y2="200"/>
+    <line x1="0" y1="300" x2="400" y2="300"/>
+    <line x1="100" y1="0" x2="100" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="400"/>
+    <line x1="300" y1="0" x2="300" y2="400"/>
+  </g>
+
+  <!-- Docker whale body -->
+  <g transform="translate(50, 100)" filter="url(#shadow)">
+    <!-- Whale body -->
+    <ellipse cx="80" cy="100" rx="70" ry="45" fill="url(#dockerBlue)"/>
+    <!-- Whale tail -->
+    <path d="M 10 100 Q -20 70 10 50 Q 25 70 20 100" fill="url(#dockerBlue)"/>
+    <!-- Whale head bump -->
+    <ellipse cx="130" cy="85" rx="25" ry="20" fill="url(#dockerBlue)"/>
+    <!-- Whale eye -->
+    <circle cx="140" cy="82" r="5" fill="#1a1a2e"/>
+    <circle cx="142" cy="80" r="2" fill="#ffffff"/>
+    <!-- Water spout -->
+    <path d="M 135 65 Q 140 40 150 50 Q 145 35 160 45" stroke="#0db7ed" stroke-width="3" fill="none" opacity="0.7"/>
+
+    <!-- Container boxes on whale -->
+    <g transform="translate(35, 45)">
+      <rect x="0" y="0" width="22" height="18" rx="2" fill="#ffffff" opacity="0.9"/>
+      <rect x="25" y="0" width="22" height="18" rx="2" fill="#ffffff" opacity="0.9"/>
+      <rect x="50" y="0" width="22" height="18" rx="2" fill="#ffffff" opacity="0.9"/>
+      <rect x="12" y="-22" width="22" height="18" rx="2" fill="#ffffff" opacity="0.9"/>
+      <rect x="37" y="-22" width="22" height="18" rx="2" fill="#ffffff" opacity="0.9"/>
+      <rect x="25" y="-44" width="22" height="18" rx="2" fill="#ffffff" opacity="0.9"/>
+    </g>
+  </g>
+
+  <!-- Arrow -->
+  <g transform="translate(185, 165)" filter="url(#glow)">
+    <path d="M 0 15 L 35 15 L 35 5 L 55 20 L 35 35 L 35 25 L 0 25 Z" fill="url(#arrowGrad)"/>
+  </g>
+
+  <!-- Windows logo -->
+  <g transform="translate(255, 130)" filter="url(#shadow)">
+    <rect x="0" y="0" width="35" height="35" rx="3" fill="url(#windowsBlue)" transform="skewX(-5)"/>
+    <rect x="40" y="0" width="35" height="35" rx="3" fill="url(#windowsBlue)" transform="skewX(-5)"/>
+    <rect x="0" y="40" width="35" height="35" rx="3" fill="url(#windowsBlue)" transform="skewX(-5)"/>
+    <rect x="40" y="40" width="35" height="35" rx="3" fill="url(#windowsBlue)" transform="skewX(-5)"/>
+
+    <!-- .exe text -->
+    <text x="37" y="115" font-family="Monaco, Consolas, monospace" font-size="16" fill="#10b981" font-weight="bold">.exe</text>
+  </g>
+
+  <!-- Title -->
+  <text x="200" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="#ffffff" filter="url(#glow)">
+    DockPiler
+  </text>
+
+  <!-- Subtitle -->
+  <text x="200" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#94a3b8">
+    Cross-Compile Windows Executables
+  </text>
+
+  <!-- Tech badges -->
+  <g transform="translate(85, 355)">
+    <rect x="0" y="0" width="45" height="20" rx="10" fill="#0db7ed" opacity="0.8"/>
+    <text x="22.5" y="14" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">Docker</text>
+
+    <rect x="55" y="0" width="55" height="20" rx="10" fill="#512bd4" opacity="0.8"/>
+    <text x="82.5" y="14" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">.NET</text>
+
+    <rect x="120" y="0" width="40" height="20" rx="10" fill="#00599c" opacity="0.8"/>
+    <text x="140" y="14" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">C++</text>
+
+    <rect x="170" y="0" width="55" height="20" rx="10" fill="#f34f29" opacity="0.8"/>
+    <text x="197.5" y="14" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">MinGW</text>
+  </g>
+</svg>
