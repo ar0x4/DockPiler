@@ -1,155 +1,199 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 220">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280">
   <defs>
-    <!-- Background gradient -->
+    <!-- Dark gradient background -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0c1222"/>
-      <stop offset="50%" style="stop-color:#1a1f35"/>
-      <stop offset="100%" style="stop-color:#0f172a"/>
+      <stop offset="0%" style="stop-color:#0a0f1a"/>
+      <stop offset="50%" style="stop-color:#111827"/>
+      <stop offset="100%" style="stop-color:#0d1321"/>
     </linearGradient>
 
-    <!-- Docker blue gradient -->
+    <!-- Accent glow -->
+    <radialGradient id="glowAccent" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0"/>
+    </radialGradient>
+
+    <!-- Docker blue -->
     <linearGradient id="dockerBlue" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#2196F3"/>
-      <stop offset="100%" style="stop-color:#0d6efd"/>
+      <stop offset="0%" style="stop-color:#60a5fa"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
     </linearGradient>
 
-    <!-- Windows gradient -->
-    <linearGradient id="winGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#00bcf2"/>
-      <stop offset="100%" style="stop-color:#0078d4"/>
+    <!-- Green accent -->
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ade80"/>
+      <stop offset="100%" style="stop-color:#22c55e"/>
     </linearGradient>
 
-    <!-- Arrow gradient -->
-    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#22c55e"/>
-      <stop offset="100%" style="stop-color:#16a34a"/>
+    <!-- Windows blue -->
+    <linearGradient id="winBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#38bdf8"/>
+      <stop offset="100%" style="stop-color:#0ea5e9"/>
     </linearGradient>
 
-    <!-- Text gradient -->
-    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#f8fafc"/>
-      <stop offset="100%" style="stop-color:#cbd5e1"/>
+    <!-- Title gradient -->
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f1f5f9"/>
+      <stop offset="50%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#e2e8f0"/>
     </linearGradient>
 
-    <!-- Glow filter -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="2" result="blur"/>
+    <!-- Glow effects -->
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
 
-    <!-- Shadow filter -->
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+    <filter id="strongGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="dropShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
     </filter>
   </defs>
 
   <!-- Background -->
-  <rect width="850" height="220" fill="url(#bgGrad)"/>
+  <rect width="900" height="280" fill="url(#bgGrad)"/>
 
-  <!-- Subtle grid pattern -->
-  <g opacity="0.03" stroke="#ffffff" stroke-width="1">
-    <line x1="0" y1="55" x2="850" y2="55"/>
-    <line x1="0" y1="110" x2="850" y2="110"/>
-    <line x1="0" y1="165" x2="850" y2="165"/>
+  <!-- Background glow orbs -->
+  <ellipse cx="150" cy="140" rx="200" ry="180" fill="url(#glowAccent)" opacity="0.4"/>
+  <ellipse cx="750" cy="140" rx="180" ry="160" fill="url(#glowAccent)" opacity="0.3"/>
+
+  <!-- Subtle grid lines -->
+  <g stroke="#ffffff" stroke-width="0.5" opacity="0.03">
+    <line x1="0" y1="70" x2="900" y2="70"/>
+    <line x1="0" y1="140" x2="900" y2="140"/>
+    <line x1="0" y1="210" x2="900" y2="210"/>
+    <line x1="225" y1="0" x2="225" y2="280"/>
+    <line x1="450" y1="0" x2="450" y2="280"/>
+    <line x1="675" y1="0" x2="675" y2="280"/>
   </g>
 
-  <!-- Decorative circles -->
-  <circle cx="750" cy="40" r="80" fill="#0d6efd" opacity="0.05"/>
-  <circle cx="100" cy="180" r="60" fill="#22c55e" opacity="0.05"/>
+  <!-- Main Icon Group -->
+  <g transform="translate(60, 65)">
 
-  <!-- Docker Whale -->
-  <g transform="translate(55, 55)" filter="url(#shadow)">
-    <!-- Whale body -->
-    <path d="M 20 65 Q 0 50 15 35 Q 25 45 25 55 L 25 65 Q 25 90 50 95 Q 90 100 110 85 Q 125 75 120 60 Q 115 50 100 50 L 30 50 Q 25 50 25 55 L 25 65 Z"
-          fill="url(#dockerBlue)"/>
-    <!-- Whale head -->
-    <ellipse cx="115" cy="58" rx="18" ry="15" fill="url(#dockerBlue)"/>
-    <!-- Eye -->
-    <circle cx="122" cy="54" r="4" fill="#0c1222"/>
-    <circle cx="123" cy="53" r="1.5" fill="#ffffff"/>
-    <!-- Spout -->
-    <path d="M 118 42 Q 122 25 130 32 M 125 28 Q 130 18 138 25"
-          stroke="#2196F3" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+    <!-- Docker Container/Whale stylized -->
+    <g filter="url(#dropShadow)">
+      <!-- Main body - modern container shape -->
+      <rect x="0" y="50" width="130" height="80" rx="8" fill="url(#dockerBlue)" opacity="0.9"/>
 
-    <!-- Container boxes -->
-    <g fill="#ffffff" opacity="0.95">
-      <rect x="32" y="28" width="18" height="14" rx="2"/>
-      <rect x="54" y="28" width="18" height="14" rx="2"/>
-      <rect x="76" y="28" width="18" height="14" rx="2"/>
-      <rect x="43" y="10" width="18" height="14" rx="2"/>
-      <rect x="65" y="10" width="18" height="14" rx="2"/>
+      <!-- Container blocks on top -->
+      <g fill="#ffffff" opacity="0.95">
+        <rect x="8" y="20" width="24" height="22" rx="3"/>
+        <rect x="38" y="20" width="24" height="22" rx="3"/>
+        <rect x="68" y="20" width="24" height="22" rx="3"/>
+        <rect x="98" y="20" width="24" height="22" rx="3"/>
+        <rect x="23" y="-6" width="24" height="22" rx="3"/>
+        <rect x="53" y="-6" width="24" height="22" rx="3"/>
+        <rect x="83" y="-6" width="24" height="22" rx="3"/>
+      </g>
+
+      <!-- Code brackets inside container -->
+      <text x="65" y="100" text-anchor="middle" font-family="Monaco, Consolas, monospace" font-size="28" fill="#ffffff" opacity="0.9">&lt;/&gt;</text>
     </g>
-  </g>
 
-  <!-- Animated-style arrow -->
-  <g transform="translate(185, 85)" filter="url(#glow)">
-    <path d="M 0 18 L 45 18 L 45 8 L 68 23 L 45 38 L 45 28 L 0 28 Z"
-          fill="url(#arrowGrad)"/>
-    <!-- Arrow shine -->
-    <path d="M 5 20 L 40 20" stroke="#ffffff" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
-  </g>
-
-  <!-- Windows Logo -->
-  <g transform="translate(270, 60)" filter="url(#shadow)">
-    <!-- Windows tiles with perspective -->
-    <g fill="url(#winGrad)">
-      <path d="M 0 8 L 28 4 L 28 32 L 0 32 Z"/>
-      <path d="M 32 3 L 65 0 L 65 32 L 32 32 Z"/>
-      <path d="M 0 36 L 28 36 L 28 64 L 0 60 Z"/>
-      <path d="M 32 36 L 65 36 L 65 68 L 32 65 Z"/>
+    <!-- Animated arrow -->
+    <g transform="translate(145, 72)" filter="url(#softGlow)">
+      <path d="M 0 20 L 50 20 L 50 8 L 75 25 L 50 42 L 50 30 L 0 30 Z" fill="url(#greenGrad)"/>
+      <!-- Arrow highlight -->
+      <path d="M 8 22 L 42 22" stroke="#ffffff" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
     </g>
+
+    <!-- Windows output -->
+    <g transform="translate(235, 45)" filter="url(#dropShadow)">
+      <!-- Window frame -->
+      <rect x="0" y="0" width="95" height="95" rx="6" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+
+      <!-- Title bar -->
+      <rect x="0" y="0" width="95" height="20" rx="6" fill="#334155"/>
+      <rect x="0" y="14" width="95" height="6" fill="#334155"/>
+
+      <!-- Window controls -->
+      <circle cx="14" cy="10" r="4" fill="#ef4444"/>
+      <circle cx="28" cy="10" r="4" fill="#eab308"/>
+      <circle cx="42" cy="10" r="4" fill="#22c55e"/>
+
+      <!-- Windows logo inside -->
+      <g transform="translate(22, 35)" fill="url(#winBlue)">
+        <rect x="0" y="0" width="22" height="22" rx="1"/>
+        <rect x="26" y="0" width="26" height="22" rx="1"/>
+        <rect x="0" y="26" width="22" height="22" rx="1"/>
+        <rect x="26" y="26" width="26" height="26" rx="1"/>
+      </g>
+    </g>
+
     <!-- .exe badge -->
-    <g transform="translate(15, 75)">
-      <rect x="0" y="0" width="45" height="20" rx="10" fill="#22c55e"/>
-      <text x="22.5" y="14" text-anchor="middle" font-family="Monaco, Consolas, monospace" font-size="11" fill="#ffffff" font-weight="bold">.exe</text>
+    <g transform="translate(255, 150)">
+      <rect x="0" y="0" width="55" height="26" rx="13" fill="url(#greenGrad)" filter="url(#softGlow)"/>
+      <text x="27.5" y="18" text-anchor="middle" font-family="Monaco, Consolas, monospace" font-size="12" fill="#ffffff" font-weight="bold">.exe</text>
     </g>
   </g>
 
-  <!-- Title -->
-  <text x="370" y="100" font-family="'Segoe UI', Arial, sans-serif" font-size="58" font-weight="700" fill="url(#textGrad)" filter="url(#glow)">
-    DockPiler
-  </text>
+  <!-- Title and text -->
+  <g transform="translate(430, 0)">
+    <!-- Main title -->
+    <text x="0" y="110" font-family="'SF Pro Display', 'Segoe UI', Arial, sans-serif" font-size="72" font-weight="800" fill="url(#titleGrad)" filter="url(#softGlow)">
+      DockPiler
+    </text>
 
-  <!-- Tagline -->
-  <text x="370" y="135" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#94a3b8">
-    Cross-compile Windows executables from GitHub
-  </text>
+    <!-- Tagline -->
+    <text x="0" y="150" font-family="'SF Pro Text', 'Segoe UI', Arial, sans-serif" font-size="18" fill="#94a3b8" font-weight="400">
+      Cross-compile Windows binaries from GitHub
+    </text>
 
-  <!-- Feature pills -->
-  <g transform="translate(370, 155)" font-family="'Segoe UI', Arial, sans-serif" font-size="11">
-    <!-- Docker -->
-    <g>
-      <rect x="0" y="0" width="58" height="24" rx="12" fill="#2196F3"/>
-      <text x="29" y="16" text-anchor="middle" fill="#ffffff" font-weight="500">Docker</text>
+    <!-- Tech badges -->
+    <g transform="translate(0, 175)" font-family="'SF Pro Text', 'Segoe UI', Arial, sans-serif" font-size="12">
+      <!-- C# -->
+      <g>
+        <rect x="0" y="0" width="42" height="28" rx="6" fill="#68217a"/>
+        <text x="21" y="18" text-anchor="middle" fill="#ffffff" font-weight="600">C#</text>
+      </g>
+      <!-- C++ -->
+      <g>
+        <rect x="50" y="0" width="46" height="28" rx="6" fill="#00599c"/>
+        <text x="73" y="18" text-anchor="middle" fill="#ffffff" font-weight="600">C++</text>
+      </g>
+      <!-- .NET -->
+      <g>
+        <rect x="104" y="0" width="50" height="28" rx="6" fill="#512bd4"/>
+        <text x="129" y="18" text-anchor="middle" fill="#ffffff" font-weight="600">.NET</text>
+      </g>
+      <!-- Docker -->
+      <g>
+        <rect x="162" y="0" width="62" height="28" rx="6" fill="#2563eb"/>
+        <text x="193" y="18" text-anchor="middle" fill="#ffffff" font-weight="600">Docker</text>
+      </g>
+      <!-- MinGW -->
+      <g>
+        <rect x="232" y="0" width="60" height="28" rx="6" fill="#ea580c"/>
+        <text x="262" y="18" text-anchor="middle" fill="#ffffff" font-weight="600">MinGW</text>
+      </g>
     </g>
-    <!-- .NET -->
-    <g>
-      <rect x="66" y="0" width="45" height="24" rx="12" fill="#512bd4"/>
-      <text x="88.5" y="16" text-anchor="middle" fill="#ffffff" font-weight="500">.NET</text>
-    </g>
-    <!-- C++ -->
-    <g>
-      <rect x="119" y="0" width="40" height="24" rx="12" fill="#00599c"/>
-      <text x="139" y="16" text-anchor="middle" fill="#ffffff" font-weight="500">C++</text>
-    </g>
-    <!-- MinGW -->
-    <g>
-      <rect x="167" y="0" width="55" height="24" rx="12" fill="#ea580c"/>
-      <text x="194.5" y="16" text-anchor="middle" fill="#ffffff" font-weight="500">MinGW</text>
-    </g>
-    <!-- GitHub -->
-    <g>
-      <rect x="230" y="0" width="58" height="24" rx="12" fill="#238636"/>
-      <text x="259" y="16" text-anchor="middle" fill="#ffffff" font-weight="500">GitHub</text>
+
+    <!-- Workflow indicator -->
+    <g transform="translate(0, 225)" fill="#64748b" font-family="Monaco, Consolas, monospace" font-size="13">
+      <text x="0" y="0">
+        <tspan fill="#22c55e">$</tspan>
+        <tspan fill="#94a3b8"> docker run dockpiler </tspan>
+        <tspan fill="#60a5fa">github.com/...</tspan>
+      </text>
     </g>
   </g>
 
-  <!-- Version badge -->
-  <g transform="translate(760, 15)">
-    <rect x="0" y="0" width="55" height="22" rx="11" fill="#374151" opacity="0.8"/>
-    <text x="27.5" y="15" text-anchor="middle" font-family="Monaco, monospace" font-size="10" fill="#9ca3af">v2.0</text>
+  <!-- Version badge top right -->
+  <g transform="translate(815, 20)">
+    <rect x="0" y="0" width="60" height="26" rx="13" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="30" y="17" text-anchor="middle" font-family="Monaco, monospace" font-size="11" fill="#94a3b8" font-weight="500">v2.0</text>
   </g>
+
+  <!-- Bottom accent line -->
+  <rect x="60" y="268" width="780" height="2" rx="1" fill="url(#dockerBlue)" opacity="0.3"/>
 </svg>

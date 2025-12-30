@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="DockPiler" width="700">
+  <img src="assets/banner.svg" alt="DockPiler" width="800">
 </p>
 
 <p align="center">
