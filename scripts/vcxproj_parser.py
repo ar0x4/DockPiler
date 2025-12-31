@@ -199,6 +199,33 @@ class VcxprojParser:
 
         return sources
 
+    def get_c_source_files(self) -> List[str]:
+        """Get only C source files (.c)."""
+        c_sources = []
+
+        for item in self.root.findall('.//ClCompile'):
+            include = item.get('Include')
+            if include:
+                path = include.replace('\\', '/')
+                if path.lower().endswith('.c'):
+                    c_sources.append(path)
+
+        return c_sources
+
+    def get_cpp_source_files(self) -> List[str]:
+        """Get only C++ source files (.cpp, .cxx, .cc)."""
+        cpp_sources = []
+        cpp_extensions = ('.cpp', '.cxx', '.cc', '.c++')
+
+        for item in self.root.findall('.//ClCompile'):
+            include = item.get('Include')
+            if include:
+                path = include.replace('\\', '/')
+                if path.lower().endswith(cpp_extensions):
+                    cpp_sources.append(path)
+
+        return cpp_sources
+
     def get_header_files(self) -> List[str]:
         """Get all header files."""
         headers = []
@@ -373,6 +400,8 @@ class VcxprojParser:
             'preprocessor_definitions': self.get_preprocessor_definitions(config, platform),
             'include_directories': self.get_include_directories(config, platform),
             'source_files': self.get_source_files(),
+            'c_source_files': self.get_c_source_files(),
+            'cpp_source_files': self.get_cpp_source_files(),
             'header_files': self.get_header_files(),
             'resource_files': self.get_resource_files(),
             'additional_libraries': self.get_additional_libraries(config, platform),
