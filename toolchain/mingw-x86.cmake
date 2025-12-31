@@ -26,8 +26,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 # Default compiler flags for Windows cross-compilation
 # Use -static to link all libraries statically (no DLL dependencies)
-set(CMAKE_C_FLAGS_INIT "-DWIN32 -D_WIN32 -D_WINDOWS -DUNICODE -D_UNICODE -static")
-set(CMAKE_CXX_FLAGS_INIT "-DWIN32 -D_WIN32 -D_WINDOWS -DUNICODE -D_UNICODE -static")
+# -DINITGUID: Instantiate COM GUIDs (required for many Windows COM projects)
+# -fpermissive: Allow MSVC-style code to compile (relaxes strict C++ checking)
+set(CMAKE_C_FLAGS_INIT "-DWIN32 -D_WIN32 -D_WINDOWS -DUNICODE -D_UNICODE -DINITGUID -static")
+set(CMAKE_CXX_FLAGS_INIT "-DWIN32 -D_WIN32 -D_WINDOWS -DUNICODE -D_UNICODE -DINITGUID -fpermissive -static")
 
 # Static linking for GCC runtime libraries (libgcc, libstdc++)
 set(CMAKE_EXE_LINKER_FLAGS_INIT "-static -static-libgcc -static-libstdc++")

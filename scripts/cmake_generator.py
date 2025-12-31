@@ -138,7 +138,8 @@ class CMakeGenerator:
             'kernel32', 'user32', 'gdi32', 'winspool', 'comdlg32',
             'advapi32', 'shell32', 'ole32', 'oleaut32', 'uuid',
             'odbc32', 'odbccp32', 'ws2_32', 'crypt32', 'secur32',
-            'rpcrt4', 'ntdll', 'shlwapi', 'version', 'psapi'
+            'rpcrt4', 'ntdll', 'shlwapi', 'version', 'psapi',
+            'userenv', 'wtsapi32', 'netapi32'
         ]
 
         for lib in default_libs:
@@ -153,7 +154,7 @@ class CMakeGenerator:
         )
 
         # Ensure essential Windows definitions
-        essential = ['WIN32', '_WINDOWS', 'UNICODE', '_UNICODE', 'SECURITY_WIN32']
+        essential = ['WIN32', '_WINDOWS', 'UNICODE', '_UNICODE', 'SECURITY_WIN32', 'GUID_NULL=IID_NULL']
 
         config = self.data.get('config', 'Release')
         if config == 'Debug':
@@ -203,12 +204,31 @@ class CMakeGenerator:
 
         return options
 
+    def _detect_wide_entry_point(self) -> bool:
+        """Detect if source files use wide-character entry point (wmain/wWinMain)."""
+        import re
+        source_files = self.data.get('source_files', [])
+        project_dir = self.data.get('project_dir', '.')
+
+        for src in source_files:
+            src_path = Path(project_dir) / src.replace('\\', '/')
+            # Try lowercase version too
+            if not src_path.exists():
+                src_path = Path(project_dir) / src.replace('\\', '/').lower()
+            if src_path.exists():
+                try:
+                    content = src_path.read_text(errors='ignore')
+                    # Look for wmain or wWinMain function definitions
+                    # Match patterns like: int wmain(, wmain(int, wWinMain(HINSTANCE, etc.
+                    if re.search(r'\bwmain\s*\(', content) or re.search(r'\bwWinMain\s*\(', content):
+                        return True
+                except Exception:
+                    pass
+        return False
+
     def _get_link_options(self) -> List[str]:
         """Get linker options."""
         options = []
-
-        # Unicode support (for wmain entry point)
-        options.append('-municode')
 
         # Subsystem
         subsystem = self.data.get('subsystem', 'Console').lower()
@@ -216,6 +236,10 @@ class CMakeGenerator:
             options.append('-mconsole')
         elif 'windows' in subsystem:
             options.append('-mwindows')
+
+        # Add -municode only if wide-character entry point is detected
+        if self._detect_wide_entry_point():
+            options.append('-municode')
 
         # Static linking option
         runtime = self.data.get('runtime_library', '')
@@ -297,6 +321,11 @@ class CMakeGenerator:
                 lines.append(f'    {src}')
             lines.append(')')
             lines.append('')
+            # Add any generated IID definition files (for MIDL-generated COM interfaces)
+            lines.append('# Auto-generated IID definition files')
+            lines.append('file(GLOB IID_SOURCES "*_iid.c")')
+            lines.append('list(APPEND SOURCES ${IID_SOURCES})')
+            lines.append('')
 
         # Resource files
         resources = self._get_resource_files()
@@ -308,17 +337,40 @@ class CMakeGenerator:
             lines.append(')')
             lines.append('')
 
-        # Executable
-        lines.append('# Create executable')
-        if resources:
-            lines.append(f'add_executable({self.project_name} ${{SOURCES}} ${{RESOURCES}})')
-        elif sources:
-            lines.append(f'add_executable({self.project_name} ${{SOURCES}})')
+        # Determine output type (Application, DynamicLibrary, StaticLibrary)
+        config_type = self.data.get('configuration_type', 'Application')
+        is_dll = config_type == 'DynamicLibrary'
+        is_static_lib = config_type == 'StaticLibrary'
+
+        # Create target based on type
+        if is_dll:
+            lines.append('# Create shared library (DLL)')
+            if resources:
+                lines.append(f'add_library({self.project_name} SHARED ${{SOURCES}} ${{RESOURCES}})')
+            elif sources:
+                lines.append(f'add_library({self.project_name} SHARED ${{SOURCES}})')
+            else:
+                lines.append('file(GLOB_RECURSE SOURCES "*.cpp" "*.c")')
+                lines.append('file(GLOB_RECURSE RESOURCES "*.rc")')
+                lines.append(f'add_library({self.project_name} SHARED ${{SOURCES}} ${{RESOURCES}})')
+        elif is_static_lib:
+            lines.append('# Create static library')
+            if sources:
+                lines.append(f'add_library({self.project_name} STATIC ${{SOURCES}})')
+            else:
+                lines.append('file(GLOB_RECURSE SOURCES "*.cpp" "*.c")')
+                lines.append(f'add_library({self.project_name} STATIC ${{SOURCES}})')
         else:
-            # Fallback: glob for sources
-            lines.append('file(GLOB_RECURSE SOURCES "*.cpp" "*.c")')
-            lines.append('file(GLOB_RECURSE RESOURCES "*.rc")')
-            lines.append(f'add_executable({self.project_name} ${{SOURCES}} ${{RESOURCES}})')
+            lines.append('# Create executable')
+            if resources:
+                lines.append(f'add_executable({self.project_name} ${{SOURCES}} ${{RESOURCES}})')
+            elif sources:
+                lines.append(f'add_executable({self.project_name} ${{SOURCES}})')
+            else:
+                # Fallback: glob for sources
+                lines.append('file(GLOB_RECURSE SOURCES "*.cpp" "*.c")')
+                lines.append('file(GLOB_RECURSE RESOURCES "*.rc")')
+                lines.append(f'add_executable({self.project_name} ${{SOURCES}} ${{RESOURCES}})')
         lines.append('')
 
         # Include directories
@@ -375,11 +427,18 @@ class CMakeGenerator:
             lines.append(')')
             lines.append('')
 
-        # Output name (ensure .exe suffix)
+        # Output name (set appropriate suffix based on type)
         lines.append('# Output settings')
         lines.append(f'set_target_properties({self.project_name} PROPERTIES')
         lines.append(f'    OUTPUT_NAME "{self.project_name}"')
-        lines.append('    SUFFIX ".exe"')
+        if is_dll:
+            lines.append('    SUFFIX ".dll"')
+            lines.append('    PREFIX ""')  # No 'lib' prefix for DLLs
+        elif is_static_lib:
+            lines.append('    SUFFIX ".lib"')
+            lines.append('    PREFIX ""')  # No 'lib' prefix
+        else:
+            lines.append('    SUFFIX ".exe"')
         lines.append(')')
         lines.append('')
 

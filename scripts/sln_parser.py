@@ -257,6 +257,28 @@ def find_solution_file(directory: str) -> Optional[str]:
     return str(sln_files[0])
 
 
+def get_vcxproj_config_type(vcxproj_path: str) -> str:
+    """Get configuration type (Application, DynamicLibrary, StaticLibrary) from vcxproj."""
+    try:
+        import xml.etree.ElementTree as ET
+        tree = ET.parse(vcxproj_path)
+        root = tree.getroot()
+
+        # Remove namespace for easier parsing
+        for elem in root.iter():
+            if '}' in elem.tag:
+                elem.tag = elem.tag.split('}', 1)[1]
+
+        # Look for ConfigurationType
+        for elem in root.findall('.//ConfigurationType'):
+            if elem.text:
+                return elem.text
+
+        return 'Application'  # Default
+    except Exception:
+        return 'Application'
+
+
 def main():
     parser = argparse.ArgumentParser(description='Parse Visual Studio .sln solution files')
     parser.add_argument('sln', nargs='?', help='Path to .sln file (or directory to search)')
@@ -264,6 +286,7 @@ def main():
     parser.add_argument('--cpp-only', action='store_true', help='Only show C++ projects')
     parser.add_argument('--csharp-only', action='store_true', help='Only show C# projects')
     parser.add_argument('--build-order', action='store_true', help='Show build order only')
+    parser.add_argument('--dlls-first', action='store_true', help='Sort DLL projects before EXE projects')
 
     args = parser.parse_args()
 
@@ -281,12 +304,27 @@ def main():
 
         if args.build_order:
             if args.cpp_only:
-                result = {'build_order': sln_parser.get_build_order('C++')}
+                build_order = sln_parser.get_build_order('C++')
             elif args.csharp_only:
-                result = {'build_order': [p for p in sln_parser.get_build_order()
-                                         if p['project_type'] in ('C#', 'C# SDK-style')]}
+                build_order = [p for p in sln_parser.get_build_order()
+                               if p['project_type'] in ('C#', 'C# SDK-style')]
             else:
-                result = {'build_order': sln_parser.get_build_order()}
+                build_order = sln_parser.get_build_order()
+
+            # If --dlls-first, sort so DLLs come before EXEs
+            if args.dlls_first and args.cpp_only:
+                def get_sort_key(proj):
+                    config_type = get_vcxproj_config_type(proj['full_path'])
+                    # DynamicLibrary = 0 (first), StaticLibrary = 1, Application = 2 (last)
+                    if config_type == 'DynamicLibrary':
+                        return 0
+                    elif config_type == 'StaticLibrary':
+                        return 1
+                    else:
+                        return 2
+                build_order = sorted(build_order, key=get_sort_key)
+
+            result = {'build_order': build_order}
         elif args.cpp_only:
             result = {'cpp_projects': sln_parser.get_cpp_projects()}
         elif args.csharp_only:

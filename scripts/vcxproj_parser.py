@@ -342,6 +342,21 @@ class VcxprojParser:
 
         return '-O2' if config == 'Release' else '-O0'
 
+    def get_configuration_type(self, config: str = 'Release', platform: str = 'x64') -> str:
+        """Get output type (Application, DynamicLibrary, StaticLibrary)."""
+        elements = self._find_elements_for_config('ConfigurationType', config, platform)
+
+        for elem in elements:
+            if elem.text:
+                return elem.text
+
+        # Also check in PropertyGroup without conditions
+        for elem in self.root.findall('.//ConfigurationType'):
+            if elem.text:
+                return elem.text
+
+        return 'Application'  # Default to executable
+
     def parse_all(self, config: str = 'Release', platform: str = 'x64') -> Dict:
         """Parse all project settings and return as dictionary."""
         # Map Win32 to x86 for consistency
@@ -354,6 +369,7 @@ class VcxprojParser:
             'configurations': self.get_configurations(),
             'config': config,
             'platform': platform,
+            'configuration_type': self.get_configuration_type(config, platform),
             'preprocessor_definitions': self.get_preprocessor_definitions(config, platform),
             'include_directories': self.get_include_directories(config, platform),
             'source_files': self.get_source_files(),
